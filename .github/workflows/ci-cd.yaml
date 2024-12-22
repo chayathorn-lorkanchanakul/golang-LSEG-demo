@@ -35,7 +35,8 @@ jobs:
       - name: Run Container and Execute tests
         run: |
           echo test
-          docker run --name test-go-http-app -d --rm -p 8080:8080 chayathornl/go-hello-http:${GITHUB_SHA}
+          docker run --name test-go-http-app -d -p 8080:8080 chayathornl/go-hello-http:${GITHUB_SHA}
+          curl http://localhost:8080
 
   deploy:
     needs: build
