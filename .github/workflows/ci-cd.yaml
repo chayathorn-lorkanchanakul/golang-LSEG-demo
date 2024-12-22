@@ -1,0 +1,55 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - release
+  pull_request:
+    branches:
+      - main
+      - develop
+      - release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: '1.20'
+
+      - name: Install dependencies
+        run: go mod download
+
+      - name: Run tests
+        run: go test -v ./...
+
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@v4.1.0
+        with:
+          args: >
+            -Dsonar.projectKey=golang-lseg-demo
+            -Dsonar.sources=.
+            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
+            -Dsonar.login=${{ secrets.SONAR_PROJECT_TOKEN }}
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_PROJECT_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ needs.build.outputs.env_name }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Environment
+        run: echo "Deploying to ${{ env.environment.name }} environment"
