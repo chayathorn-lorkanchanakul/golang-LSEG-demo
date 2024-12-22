@@ -30,15 +30,15 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t chayathornl/go-hello-http:$GITHUB_SHA .
-          docker tag chayathornl/go-hello-http:$GITHUB_SHA chayathornl/go-hello-http:latest
+          docker build -t chayathornl/go-hello-http:$GITHUB_RUN_ID .
+          docker tag chayathornl/go-hello-http:$GITHUB_RUN_ID chayathornl/go-hello-http:latest
           docker images
             
       - name: Run Container and Execute tests
         run: |
           echo test
           docker run --name test-go-http-app -d -p 8080:8080 chayathornl/go-hello-http:latest
-          docker run --name test-go-http-app -d -p 8081:8080 chayathornl/go-hello-http:$GITHUB_SHA
+          docker run --name test-go-http-app-1 -d -p 8081:8080 chayathornl/go-hello-http:$GITHUB_RUN_ID
           curl http://localhost:8080
           echo '-----------------'
           curl http://localhost:8081
