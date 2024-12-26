@@ -37,7 +37,7 @@ jobs:
       - name: Run Container and Execute tests
         run: |
           echo test
-          echo github.ref
+          cat github.ref
           docker run --name test-go-http-app -d -p 8080:8080 chayathornl/go-hello-http:latest
           docker run --name test-go-http-app-1 -d -p 8081:8080 chayathornl/go-hello-http:1.0.$GITHUB_RUN_NUMBER
           curl http://localhost:8080
