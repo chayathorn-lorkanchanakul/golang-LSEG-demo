@@ -75,8 +75,8 @@ jobs:
           docker push chayathornl/go-hello-http:1.0.$GITHUB_RUN_NUMBER
 
   deploy_dev:
-    run-on: ubuntu-24.04
     needs: [lint, build]
+    run-on: ubuntu-24.04
     steps:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
