@@ -13,7 +13,20 @@ on:
       - release
 
 jobs:
+  lint: 
+    runs-on: ubuntu-24.04
+    steps: 
+      - name: Checkout code 
+      uses: actions/checkout@v4 
+
+      - name: Install golangci-lint 
+      run: | 
+        curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.50.1 
+      - name: Run golangci-lint 
+        run: golangci-lint run ./... 
+        continue-on-error: true
   build:
+    needs: lint
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
@@ -92,6 +105,15 @@ jobs:
 
       - name: Deploy to release environment
         if: github.ref == 'refs/heads/release'
+        # run: echo "Deploying to ${{ env.environment.name }} environment"
+        run: |
+          echo "Deploy to develop"
+          docker pull chayathornl/go-hello-http:latest
+          docker run -p 8080:8080 -d chayathornl/go-hello-http:latest
+
+          curl http://localhost:8080
+      - name: Deploy to release environment
+        if: github.ref == 'refs/heads/main'
         # run: echo "Deploying to ${{ env.environment.name }} environment"
         run: |
           echo "Deploy to develop"
