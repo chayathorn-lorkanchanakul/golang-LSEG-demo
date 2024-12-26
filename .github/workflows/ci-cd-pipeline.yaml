@@ -14,7 +14,7 @@ on:
       - release
 
 jobs:
-  lint: 
+  scan: 
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout code 
@@ -76,7 +76,7 @@ jobs:
 
   deploy_dev:
     if: github.event_name != 'pull_request'
-    needs: [lint, build]
+    needs: [scan, build]
     runs-on: ubuntu-24.04
     steps:
       - name: Set up Docker Buildx
@@ -102,7 +102,7 @@ jobs:
 
   deploy_release:
     if: github.event_name != 'pull_request'
-    needs: [lint, build]
+    needs: [scan, build]
     runs-on: ubuntu-24.04
     steps:
       - name: Set up Docker Buildx
@@ -128,7 +128,7 @@ jobs:
 
   deploy_prd:
     if: github.event_name != 'pull_request'
-    needs: [lint, build]
+    needs: [scan, build]
     runs-on: ubuntu-24.04
     steps:
       - name: Set up Docker Buildx
