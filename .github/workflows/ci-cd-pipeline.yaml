@@ -75,6 +75,7 @@ jobs:
           docker push chayathornl/go-hello-http:1.0.$GITHUB_RUN_NUMBER
 
   deploy_dev:
+    if: github.event_name != 'pull_request'
     needs: [lint, build]
     runs-on: ubuntu-24.04
     steps:
@@ -100,6 +101,7 @@ jobs:
           curl http://localhost:8080
 
   deploy_release:
+    if: github.event_name != 'pull_request'
     needs: [lint, build]
     runs-on: ubuntu-24.04
     steps:
