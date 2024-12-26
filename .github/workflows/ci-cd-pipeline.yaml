@@ -6,7 +6,7 @@ on:
       - main
       - develop
       - release
-      - 'feat/**'
+      # - 'feat/**'
   pull_request:
     branches:
       - main
