@@ -12,9 +12,6 @@ on:
       - develop
       - release
 
-env:
-  APP_IMAGE_VERSION: 1.0.${{GITHUB_RUN_NUMBER}}
-
 jobs:
   build:
     runs-on: ubuntu-24.04
