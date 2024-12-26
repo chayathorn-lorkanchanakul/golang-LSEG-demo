@@ -68,6 +68,15 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Test before to merge develop environment
+        if: github.ref == 'refs/heads/feat/'
+        # run: echo "Deploying to ${{ env.environment.name }} environment"
+        run: |
+          echo "Deploy to develop"
+          docker pull chayathornl/go-hello-http:latest
+          docker run chayathornl/go-hello-http:latest -p 8080 -d
+          curl http://localhost:8080
+
       - name: Deploy to develop environment
         if: github.ref == 'refs/heads/develop'
         # run: echo "Deploying to ${{ env.environment.name }} environment"
