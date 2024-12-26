@@ -73,7 +73,7 @@ jobs:
           echo ${{ github.ref }}
 
       - name: Test before to merge develop environment
-        if: startsWith(github.ref, '/feat/')
+        if: startsWith(github.ref, '/feat/') || startsWith(github.ref, 'refs/pull')
         # run: echo "Deploying to ${{ env.environment.name }} environment"
         run: |
           echo "Deploy to develop"
