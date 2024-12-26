@@ -77,4 +77,4 @@ jobs:
         run: |
           echo "Deploy to develop"
           docker pull chayathornl/go-hello-http:latest
-          docker run 
+          docker run chayathornl/go-hello-http:latest -p 8080
