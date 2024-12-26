@@ -76,7 +76,7 @@ jobs:
 
   deploy_dev:
     needs: [lint, build]
-    run-on: ubuntu-24.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
