@@ -15,16 +15,17 @@ on:
 jobs:
   lint: 
     runs-on: ubuntu-24.04
-    steps: 
+    steps:
       - name: Checkout code 
-      uses: actions/checkout@v4 
+        uses: actions/checkout@v4 
 
       - name: Install golangci-lint 
-      run: | 
-        curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.50.1 
+        run: | 
+          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.50.1 
       - name: Run golangci-lint 
         run: golangci-lint run ./... 
         continue-on-error: true
+        
   build:
     needs: lint
     runs-on: ubuntu-24.04
