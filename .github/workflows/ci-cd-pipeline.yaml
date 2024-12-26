@@ -69,7 +69,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Test before to merge develop environment
-        if: startsWith(github.ref, 'refs/heads/feat/')
+        if: startsWith(github.ref, '/feat/')
         # run: echo "Deploying to ${{ env.environment.name }} environment"
         run: |
           echo "Deploy to develop"
