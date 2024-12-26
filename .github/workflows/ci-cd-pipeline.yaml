@@ -118,7 +118,7 @@ jobs:
         run: |
           echo ${{ github.ref }}
       
-      - name: Deploy on develop environment
+      - name: Deploy on release environment
         if: github.ref == 'refs/heads/release'
         run: |
           echo "Deploy to develop"
@@ -144,7 +144,7 @@ jobs:
         run: |
           echo ${{ github.ref }}
       
-      - name: Deploy on develop environment
+      - name: Deploy on prd environment
         if: github.ref == 'refs/heads/main'
         run: |
           echo "Deploy to develop"
