@@ -79,9 +79,10 @@ jobs:
           docker images
           docker push chayathornl/go-hello-http:latest
           docker push chayathornl/go-hello-http:1.0.$GITHUB_RUN_NUMBER
+          echo 'Push image version: 1.0.$GITHUB_RUN_NUMBER'
 
   deploy_dev:
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' || github.event_name == 'workflow_dispatch'
     needs: [scan, build]
     runs-on: ubuntu-24.04
     steps:
@@ -107,7 +108,7 @@ jobs:
           curl http://localhost:8080
 
   deploy_release:
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' || github.event_name == 'workflow_dispatch'
     needs: [scan, build]
     runs-on: ubuntu-24.04
     steps:
@@ -125,15 +126,15 @@ jobs:
           echo ${{ github.ref }}
       
       - name: Deploy on release environment
-        if: github.ref == 'refs/heads/release'
+        if: github.ref == 'refs/heads/release' && github.event_name == 'workflow_dispatch'
         run: |
-          echo "Deploy to develop"
-          docker pull chayathornl/go-hello-http:latest
-          docker run -p 8080:8080 -d chayathornl/go-hello-http:latest
+          echo "Deploy to release environment"
+          docker pull chayathornl/go-hello-http:$version
+          docker run -p 8080:8080 -d chayathornl/go-hello-http:$version
           curl http://localhost:8080
 
   deploy_prd:
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' || github.event_name == 'workflow_dispatch'
     needs: [scan, build]
     runs-on: ubuntu-24.04
     steps:
@@ -151,11 +152,11 @@ jobs:
           echo ${{ github.ref }}
       
       - name: Deploy on prd environment
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
         run: |
-          echo "Deploy to develop"
-          docker pull chayathornl/go-hello-http:latest
-          docker run -p 8080:8080 -d chayathornl/go-hello-http:latest
+          echo "Deploy to prd"
+          docker pull chayathornl/go-hello-http:$version
+          docker run -p 8080:8080 -d chayathornl/go-hello-http:$version
           curl http://localhost:8080
 
 
