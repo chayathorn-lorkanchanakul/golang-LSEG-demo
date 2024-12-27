@@ -12,6 +12,12 @@ on:
       - main
       - develop
       - release
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Deployment version' 
+        required: true 
+        default: '1.0.0'
 
 jobs:
   scan: 
@@ -37,7 +43,7 @@ jobs:
         continue-on-error: true
 
   build:
-    needs: lint
+    needs: scan
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
